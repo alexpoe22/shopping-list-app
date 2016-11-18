@@ -26,16 +26,19 @@ var Storage = {
     }
   }
 };
+
 var createStorage = function() {
   var storage = Object.create(Storage);
   storage.items = [];
   storage.setId = 1;
   return storage;
 }
+
 var storage = createStorage();
 storage.add('Broad beans');
 storage.add('Tomatoes');
 storage.add('Peppers');
+
 var app = express();
 app.use(express.static('public'));
 var jsonParser = bodyParser.json();
