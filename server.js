@@ -88,6 +88,8 @@ app.delete('/items/:id', function(req, res) {
     }
     res.status(200).json(item);
 });
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, function(){
+  console.log('Server is running')
+});
 exports.app = app;
 exports.storage = storage; 
