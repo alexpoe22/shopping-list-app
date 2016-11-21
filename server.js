@@ -24,8 +24,18 @@ var Storage = {
             return item;
         }
     }
-  }
+  },
+  verifyID: function (id, name) {
+    for (var i = 0; i < this.items.id.length; i++) {
+          if(item.id === id) {
+          return item;
+      }
+    } 
+  } 
+
 };
+
+
 
 var createStorage = function() {
   var storage = Object.create(Storage);
@@ -46,6 +56,15 @@ app.get('/items', function(req, res) {
     res.json(storage.items);
 });
 app.post('/items', jsonParser, function(req, res) {
+    // Find an item from storage with same ID.
+    //   - If one exists, throw an error.
+    //   - If not, keep going.
+
+    if (item.id === id) {
+      var item = storage.verifyID(req.params.id, req.body.name);
+      return res.sendStatus(418);
+    }
+
     if (!req.body) {
         return res.sendStatus(400);
     }

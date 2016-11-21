@@ -5,6 +5,7 @@ var server = require('../server.js');
 var should = chai.should();
 var app = server.app;
 var storage = server.storage;
+var expect = chai.expect();
 
 chai.use(chaiHttp);
 
@@ -32,16 +33,36 @@ describe('Shopping', function() {
 
 	});
 
+	it('should check that duplicate id\'s are not being formed', function(done) {
+		chai.request(app)
+		.post('/items')
+		.send({name:'bob', id: 2})
+		.end(function(err, res) {
+			res.should.have.status(400);
+			res.body.should.be.a('object');
+		}
+	})
+	
+
+
+
 	it('should change an item on put', function(done){
 		chai.request(app)
 		.put('/items/3')
 		.send({name:'Alex'})
 		.end(function(err, res){
-			console.log(storage.items);
+			console.log(res.body.name);
 			res.should.have.status(200);	
+			res.body.should.be.a('object');
+			res.body.id.should.equal(3);
+			res.body.name.should.equal('Alex');
+			res.body.name.should.not.equal(undefined);
+			
 			done();
 		});
 	});
+
+
 
 	it('should list items on get', function(done){
         chai.request(app)
@@ -68,7 +89,10 @@ describe('Shopping', function() {
         chai.request(app)
         .delete('/items/1')
         .end(function(err, res){
+        	console.log(storage.items);
             res.should.have.status(200);
+            res.body.name.should.equal('Broad beans');
+          	
             done();
         })
     });
